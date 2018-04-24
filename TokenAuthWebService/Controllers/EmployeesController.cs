@@ -8,6 +8,7 @@ using EmployeeDataAccess;
 
 namespace TokenAuthWebService.Controllers
 {
+    [Authorize]
     public class EmployeesController : ApiController
     {
         public IEnumerable<EmployeeModel> Get()
