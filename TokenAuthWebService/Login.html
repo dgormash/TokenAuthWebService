@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="padding-top: 20px">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="well">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <th colspan="2">
+                            Existing user login
+                            <a class="btn btn-success pull-right" href="Register.html">Register</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>User name</td>
+                        <td><input type="text" id="userName" placeholder="Your user name" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="password" id="password" placeholder="Enter your password" /></td>
+                    </tr>
+                    
+                    <tr class="success">
+                        <td colspan="2">
+                            <input type="button" id="bLogin" class="btn btn-success" value="Login" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            
+
+            <div class="alert alert-danger collapse" id="errorMsgArea">
+                <a id="closeLnk" class="close" href="#">&times;</a>
+                <div id="errorMsg"></div>
+            </div>
+
+        </div>
+    </div>
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#closeLnk').click(function() {
+            $('#errorMsgArea').hide('fade');
+        });
+        $('#bLogin').click(function() {
+            $.ajax({
+                url: '/token',
+                method: 'POST',
+                contentType: 'application/json',
+                data: {
+                    username: $('#userName').val(),
+                    password: $('#password').val(),
+                    grant_type: 'password'
+                },
+                success: function(response) {
+                    sessionStorage.setItem('accessToken', response.access_token);
+                    window.location.href = "Data.html";
+                },
+                error: function(jqXrh) {
+                    $('#errorMsg').text(jqXrh.responseText);
+                    $('#errorMsgArea').show('fade');
+                }
+            });
+        });
+    })
+    </script>
+</body>
+</html>
